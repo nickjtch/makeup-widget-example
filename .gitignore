@@ -1,0 +1,9 @@
+logs
+*.log
+npm-debug.log*
+docs
+
+build
+node_modules/
+package-lock.json
+*.ignore

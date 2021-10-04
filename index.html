@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html class="no-js" lang="en" dir="ltr">
+	<head>
+        <meta charset="utf-8">
+        <link rel="shortcut icon" href="#">
+        <title>Designhubz | Widget API Example</title>
+
+        <style>
+            #designhubz-widget-container {
+                margin-left: calc((100vw - 100vh) / 2);
+                margin-top: calc((100vh - 75vh) / 2);
+                width: 100vh; height: 75vh;
+                background-color: black;
+            }
+
+            #progress {
+                background-color: #47f;
+                height: 6px;
+                width: 2%;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- The container of the widget. -->
+        <div id="designhubz-widget-container" >
+        <div id="progress"></div>
+        </div>
+        
+        <script type="module" src="./build/index.js"></script>
+    </body>
+</html>

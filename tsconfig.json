@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["dom", "es2015"],
+    "sourceMap": true,
+    "baseUrl": ".",
+    "strict": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "build",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
