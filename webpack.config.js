@@ -21,6 +21,7 @@ module.exports = {
     },
     plugins:[
         new (require('browser-sync-webpack-plugin'))({
+            port: 4200,
             https: true,
             server: { baseDir: ['.'] }
         })
