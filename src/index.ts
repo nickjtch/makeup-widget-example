@@ -6,28 +6,41 @@ export async function makeupDemo()
 {
     // My parameters
     const container = document.getElementById('designhubz-widget-container') as HTMLDivElement;
+    // Different test products (no variation constraint)
     const _MakeupSKUS = ['MP000000008737126', 'MP000000008977078', 'MP000000008827661', 'MP000000009070355'];
 
-    // A) Handle camera permissions before widget creation
+    // Handle camera permissions before widget creation
     await demo_videoAuth();
 
-    // B-01) Prepare widget: creates the view
+    //  Prepare widget: creates the view
     console.log('Designhubz.createMakeupWidget');
     let widget = await Designhubz.createMakeupWidget(container, demo_progressHandler('Makeup widget'));
     console.log('widget =', widget);
 
-    // B-02) User id (analytics): prerequisite for further interaction with the widget
+    // Set user id for analytics: prerequisite for further interaction with the widget
     widget.setUserId('1234');
 
-    // C) Fetch any makeup products from the catalog
-    const product = await Designhubz.fetchMakeupProduct(_MakeupSKUS[0]);
-    console.log('product =', product);
+    let demoProductIndex = 0;
+    async function cycleMakeupSKUS()
+    {
+        if(demoProductIndex < _MakeupSKUS.length)
+        {
+            const mpID = _MakeupSKUS[demoProductIndex];
 
-    // D) Load variation, which can be 'product', or any of 'product.variations'
-    await widget.loadVariation(product);
+            // Load a product from id (replaces fetchProduct+loadVariation)
+            const product = await widget.loadProduct(mpID);
 
-    // E-01) Features: take snaphot
-    // Listen to tracking events
+            console.log(`Loaded ${demoProductIndex + 1}/${_MakeupSKUS.length} '${mpID}'`, product);
+
+            await new Promise<void>( resolve => setTimeout(resolve, 2000) );
+            demoProductIndex++;
+            cycleMakeupSKUS();
+        }
+    }
+    cycleMakeupSKUS();
+    
+
+    // Features: Listen to tracking events
     widget.onTrackingStatusChange.Add( status =>
     {
         const log = (text: string) => console.log(`TrackingStatus [${status}] ${text}`);
@@ -41,8 +54,7 @@ export async function makeupDemo()
         }
     });
 
-    // E-02) Features: take snaphot
-    // Take a snapshot of what is currently displayed in widget
+    // Features: Take a snapshot of what is currently displayed in widget
     console.log(`   Press 'Enter' to take a snapshot of the viewer currently`);
     window.addEventListener('keydown', async ke =>
     {
@@ -56,11 +68,6 @@ export async function makeupDemo()
             open(URL.createObjectURL(blob), '_blank');
         }
     });
-
-    // E-03) Features: fetch recommendations
-    // Results are deferred until user has been identified and analysed
-    // const recommendations = await widget.fetchRecommendations(3);
-    // console.log('recommendations', recommendations);
 
     // Set 'external' stats, from actions that we don't control
     widget.setStat(Designhubz.Stat.Whishlisted);
