@@ -2,6 +2,13 @@
 
 This project highlights the usage of the designhubz **makeup** web SDK.
 
+``` typescript
+import * as Designhubz from 'designhubz-widget';
+
+Designhubz.createMakeupWidget(someDivElement)
+.then( widget => widget.loadProduct(SKU) );
+```
+
 ## Roadmap
 
 Eventually, *Eyewear* & *Makeup* try-on widgets will be available through the same `designhubz-widget` web SDK.
