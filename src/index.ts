@@ -37,7 +37,7 @@ export async function makeupDemo()
             cycleMakeupSKUS();
         }
     }
-    cycleMakeupSKUS();
+    await cycleMakeupSKUS();
     
 
     // Features: Listen to tracking events
@@ -55,19 +55,43 @@ export async function makeupDemo()
     });
 
     // Features: Take a snapshot of what is currently displayed in widget
-    console.log(`   Press 'Enter' to take a snapshot of the viewer currently`);
+    console.log(`   Press 'Enter' to take a snapshot of the viewer currently\nor 'alt + Enter' for a double snapshot.`);
     window.addEventListener('keydown', async ke =>
     {
         if(ke.code === 'Enter')
         {
-            // requet and await snapshot result
-            const snapshot = await widget.takeSnapshotAsync();
+            if(ke.altKey)
+            {
+                // requet and await double snapshot results
+                const {snapshot, originalSnapshot} = await widget.takeDoubleSnapshotAsync();
 
-            // use the snapshot with helper functions
-            const blob = await snapshot.getBlobAsync('png');
-            open(URL.createObjectURL(blob), '_blank');
+                // create a canvas that draws both snapshots
+                const canvas = document.createElement('canvas');
+                canvas.width = snapshot.imageData.width * 2;
+                canvas.height = snapshot.imageData.height;
+                const context2d = canvas.getContext('2d')!;
+                context2d.putImageData(snapshot.imageData, 0, 0);
+                context2d.putImageData(originalSnapshot.imageData, snapshot.imageData.width, 0);
+
+                // create png blob from composited canvas and open it
+                const blob = await new Promise<Blob | null>( r => canvas.toBlob(r, 'png') );
+                open(URL.createObjectURL(blob), '_blank');
+            }
+            else
+            {
+                // request a single snapshot
+                const snapshot = await widget.takeSnapshotAsync();
+
+                // use the snapshot with helper functions
+                const blob = await snapshot.getBlobAsync('png');
+                open(URL.createObjectURL(blob), '_blank');
+            }
         }
     });
+
+    // Features: Get recommendations
+    const recommendations = await widget.fetchRecommendations(5);
+    console.log('recommendations', recommendations);
 
     // Set 'external' stats, from actions that we don't control
     widget.setStat(Designhubz.Stat.Whishlisted);

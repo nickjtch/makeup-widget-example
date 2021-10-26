@@ -20,10 +20,15 @@ During initial releases however *designhubz-widget for 'makeup/'* uses a separat
 }
 ```
 
-Also missing is *recommendations* which will be mocked soon (with live results coming after deployment/training as planned)
-
 
 ## Changelog
+
+### 1.0.2
+- Assign `variation = product` in widget object.
+- Fix Cors bug.
+- Kickstart recommendations: Mock.
+- Stability improved.
+- Add feature `widget.takeDoubleSnapshotAsync`: it captures 2 `Snapshot` objects with & without makeup applied.
 
 ### 1.0.1 (Initial release)
 - Introduces makeup widget functionality
@@ -51,4 +56,4 @@ Also missing is *recommendations* which will be mocked soon (with live results c
 2. *index.html* : shows an `HTMLDivElement` where the widget (iFrame) will be contained.
 3. *src/index.ts* : In this example, we are fetching a specific product, creating and interacting with a widget.
 
-Live demo: [https://dg0iszzfyf3bz.cloudfront.net/widget/makeup/1.0.1/index.html](https://dg0iszzfyf3bz.cloudfront.net/widget/makeup/1.0.1/index.html?v=211012_A)
+Live demo: https://dg0iszzfyf3bz.cloudfront.net/widget/makeup/1.0.2/index.html
